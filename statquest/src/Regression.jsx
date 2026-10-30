@@ -73,7 +73,7 @@ export default function Regression({ onSave }) {
           <h2>1. Enter your data</h2>
 
           <details className="optional">
-            <summary>💡 Optional: not sure which is X and which is Y? Paste the problem</summary>
+            <summary>Optional: not sure which is X and which is Y? Paste the problem</summary>
             <label>Word problem
               <textarea rows="4" value={problem} onChange={(e) => setProblem(e.target.value)}
                 placeholder="e.g. A teacher wants to know if the number of hours students study affects their exam scores." />

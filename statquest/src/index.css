@@ -77,7 +77,25 @@ dt { font-weight: 800; } dd { margin: 0 0 8px; }
 /* ---------- Regression extras ---------- */
 .optional { border: 2px dashed var(--violet); border-radius: 12px; padding: 8px 12px; margin-bottom: 12px; background: #FBF8FF; }
 .optional summary { cursor: pointer; font-weight: 800; }
-.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+.pair label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.25;
+  min-height: 88px;
+}
+.pair input {
+  margin-top: 0;
+  width: 100%;
+}
 @media (max-width: 480px) { .pair { grid-template-columns: 1fr; } }
 /* ---------- Page background (all pages except the cover) ---------- */
 .app-bg {

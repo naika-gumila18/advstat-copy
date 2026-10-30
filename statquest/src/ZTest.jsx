@@ -143,12 +143,12 @@ export default function ZTest({ onSave }) {
 
   return (
     <>
-      <h1 className="pix">🎯 Hypothesis Testing</h1>
+      <h1 className="pix"> Hypothesis Testing</h1>
       <div className="grid2">
         <section className="card">
           <h2>1. Set up the test</h2>
           <div className="paste">
-            <label>✨ Paste the whole problem and I will read it for you
+            <label>Paste the whole problem and I will read it for you
               <textarea rows="5" value={problem} onChange={(e) => setProblem(e.target.value)}
                 placeholder="e.g. A coffee shop claims the average waiting time is less than 4 minutes. A random sample of 25 orders has a mean of 3.6 minutes and a sample standard deviation of 0.8 minutes. Test at the 5% level of significance." />
             </label>

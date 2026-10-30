@@ -1,25 +1,94 @@
-export default function Cover({ onStart, onLearn }) {
+import HeroBackground from './HeroBackground';
+import Navbar from './Navbar';
+
+export default function Cover({
+  onStart,
+  onLearn,
+  onNavigate,
+  currentUser,
+  onOpenLogin,
+  onOpenSignup,
+  onLogout,
+}) {
   return (
-    <section className="cover" aria-label="StatQuest cover page">
-      <div className="cover-inner">
-        <svg width="64" height="64" viewBox="0 0 16 16" aria-hidden="true" shapeRendering="crispEdges">
-          <rect width="16" height="16" rx="3" fill="#7C4DFF" />
-          <rect x="2" y="9" width="2" height="5" fill="#FFF8EC" /><rect x="5" y="6" width="2" height="8" fill="#FFF8EC" />
-          <rect x="8" y="8" width="2" height="6" fill="#FFD66B" /><rect x="11" y="3" width="2" height="11" fill="#FFF8EC" />
-        </svg>
-        {/* <p className="pix cover-kicker"></p> */}
-        <h1 className="pix cover-title">StatQuest</h1>
-        <p className="cover-tag">Your adventure in statistical analysis.</p>
-        <ul className="cover-chips">
-          <li>Simple Linear Regression</li>
-          <li>Z-tests &amp; t-tests</li>
-          <li>Step-by-step solutions</li>
-        </ul>
-        <div className="row cover-actions">
-          <button className="btn cover-start" autoFocus onClick={onStart}>▶ START</button>
-          <button className="btn ghost" onClick={onLearn}>How it works</button>
+    <section className="sq-hero-screen" aria-label="StatQuest Landing Page">
+      {/* 1. Animated Living Pixel Background Canvas */}
+      <HeroBackground />
+
+      {/* 2. Top Navigation Bar matching the inspiration */}
+      <Navbar
+        page="cover"
+        onNavigate={onNavigate}
+        currentUser={currentUser}
+        onOpenLogin={onOpenLogin}
+        onOpenSignup={onOpenSignup}
+        onLogout={onLogout}
+        variant="hero"
+      />
+
+      {/* 3. Central Hero Content */}
+      <div className="sq-hero-content">
+        <p className="pix sq-hero-kicker">WELCOME TO</p>
+
+        <h1 className="pix sq-hero-title">STATQUEST</h1>
+
+        <p className="sq-hero-subtitle">
+          Discover the power of statistics through a living world of data,
+          probability, and discovery.
+        </p>
+
+        <div className="sq-hero-actions">
+          <button
+            className="sq-hero-cta pix"
+            onClick={onStart}
+            autoFocus
+          >
+            Get started
+          </button>
+        </div>
+
+        {/* Feature badges / quick chips */}
+        <div className="sq-hero-chips">
+          <button
+            type="button"
+            className="sq-chip-btn"
+            onClick={() => onNavigate('regression')}
+          >
+            <span className="sq-chip-icon"></span>
+            <span>Simple Linear Regression</span>
+          </button>
+          <button
+            type="button"
+            className="sq-chip-btn"
+            onClick={() => onNavigate('ztest')}
+          >
+            <span className="sq-chip-icon"></span>
+            <span>Hypothesis Testing</span>
+          </button>
+          <button
+            type="button"
+            className="sq-chip-btn"
+            onClick={() => onNavigate('home')}
+          >
+            <span className="sq-chip-icon"></span>
+            <span>Adventure Mode &amp; XP</span>
+          </button>
+          <button
+            type="button"
+            className="sq-chip-btn"
+            onClick={onLearn}
+          >
+            <span className="sq-chip-icon"></span>
+            <span>How it works</span>
+          </button>
         </div>
       </div>
+
+      {/* 4. Bottom Footer Bar matching the inspo */}
+      <footer className="sq-hero-footer">
+        <div className="sq-footer-brand pix">StatQuest</div>
+        <div className="sq-footer-copy">© 2026 StatQuest</div>
+      </footer>
     </section>
   );
 }

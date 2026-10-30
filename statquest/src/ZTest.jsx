@@ -153,14 +153,14 @@ export default function ZTest({ onSave }) {
                 placeholder="e.g. A coffee shop claims the average waiting time is less than 4 minutes. A random sample of 25 orders has a mean of 3.6 minutes and a sample standard deviation of 0.8 minutes. Test at the 5% level of significance." />
             </label>
             <div className="row">
-              <button className="btn" onClick={readProblem} disabled={!problem.trim()}>Read &amp; solve ▶</button>
+              <button className="btn" onClick={readProblem} disabled={!problem.trim()}>Read &amp; solve</button>
               <button className="btn ghost" onClick={() => { setProblem(''); setInfo(null); }}>Clear</button>
             </div>
             {info && (
               <div className="found" role="status">
                 <b>Here is what I understood:</b>
                 <ul>{info.found.map((t) => <li key={t}>{t}</li>)}</ul>
-                {info.notes.map((n) => <p key={n} className="note">ℹ️ {n}</p>)}
+                {info.notes.map((n) => <p key={n} className="note">Note: {n}</p>)}
                 <small>Anything wrong? Fix it in the boxes below and press Solve.</small>
               </div>
             )}
@@ -219,12 +219,12 @@ export default function ZTest({ onSave }) {
               )}
             </>
           )}
-          {lowN && <p className="note">⚠️ Your module uses the Z-test only when n ≥ 30. With a smaller sample, consider the t-test.</p>}
+          {lowN && <p className="note">Warning: Your module uses the Z-test only when n ≥ 30. With a smaller sample, consider the t-test.</p>}
           <div className="row">
-            <button className="btn" onClick={() => run()}>Solve ▶</button>
+            <button className="btn" onClick={() => run()}>Solve</button>
             <button className="btn ghost" onClick={() => pick({ ...INIT, dist: f.dist, mode: f.mode })}>Reset</button>
           </div>
-          {err && <p className="err" role="alert">⚠️ {err}</p>}
+          {err && <p className="err" role="alert">Warning: {err}</p>}
         </section>
 
         <section className="card">
@@ -242,7 +242,7 @@ export default function ZTest({ onSave }) {
                 {steps.map(([t, b]) => <li key={t}><b>{t}</b><br />{b}</li>)}
               </ol>
               <p className="note">Statistical significance is not the same as practical importance.</p>
-              <button className="btn ghost" onClick={() => download('hypothesis-test.txt', summary())}>⬇ Download solution</button>
+              <button className="btn ghost" onClick={() => download('hypothesis-test.txt', summary())}>Download solution</button>
             </>
           )}
         </section>

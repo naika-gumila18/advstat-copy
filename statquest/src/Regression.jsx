@@ -83,8 +83,8 @@ export default function Regression({ onSave }) {
               <div className="found" role="status">
                 <p><b>Independent variable (X):</b> {names.x}<br /><b>Dependent variable (Y):</b> {names.y}</p>
                 <p>{swapped ? 'You swapped the roles. ' : ''}{vars.reason}</p>
-                {vars.guess && <p className="note">ℹ️ This is a best guess. Ask yourself: which variable am I trying to predict? That one is Y.</p>}
-                <button className="btn ghost sm" onClick={swap}>⇄ Swap X and Y</button>
+                {vars.guess && <p className="note">Note: This is a best guess. Ask yourself: which variable am I trying to predict? That one is Y.</p>}
+                <button className="btn ghost sm" onClick={swap}>Swap X and Y</button>
                 <p><small>You still type the X and Y numbers yourself below.</small></p>
               </div>
             ) : <p className="note">{vars.message}</p>)}
@@ -109,7 +109,7 @@ export default function Regression({ onSave }) {
                   <td>{i + 1}</td>
                   <td><input aria-label={`X ${i + 1}`} inputMode="decimal" value={r.x} onChange={(e) => setCell(i, 'x', e.target.value)} /></td>
                   <td><input aria-label={`Y ${i + 1}`} inputMode="decimal" value={r.y} onChange={(e) => setCell(i, 'y', e.target.value)} /></td>
-                  <td><button className="btn ghost sm" aria-label={`Delete row ${i + 1}`} disabled={rows.length <= 1} onClick={() => setRows((rs) => rs.filter((_, j) => j !== i))}>✕</button></td>
+                  <td><button className="btn ghost sm" aria-label={`Delete row ${i + 1}`} disabled={rows.length <= 1} onClick={() => setRows((rs) => rs.filter((_, j) => j !== i))}>Delete</button></td>
                 </tr>
               ))}</tbody>
             </table>
@@ -120,10 +120,10 @@ export default function Regression({ onSave }) {
           </label>
           <button className="btn ghost" onClick={addPasted}>Use pasted data</button>
           <div className="row">
-            <button className="btn" onClick={calc}>Calculate ▶</button>
+            <button className="btn" onClick={calc}>Calculate</button>
             <button className="btn ghost" onClick={clear}>Clear data</button>
           </div>
-          {err && <p className="err" role="alert">⚠️ {err}</p>}
+          {err && <p className="err" role="alert">Warning: {err}</p>}
         </section>
 
         <section className="card">
@@ -146,7 +146,7 @@ export default function Regression({ onSave }) {
                 <li><b>R²:</b> {Number.isFinite(res.r2) ? `${fmt(res.r2 * 100, 2)}% of the variation in ${yn} is explained by ${xn}.` : `undefined because ${yn} does not vary.`}</li>
               </ul>
               <p className="note">Correlation does not imply causation. Thresholds on |r|: &lt;0.2 very weak, 0.2–0.39 weak, 0.4–0.59 moderate, 0.6–0.79 strong, ≥0.8 very strong.</p>
-              <button className="btn ghost" onClick={() => download('regression-results.txt', summary())}>⬇ Download results</button>
+              <button className="btn ghost" onClick={() => download('regression-results.txt', summary())}>Download results</button>
             </>
           )}
         </section>

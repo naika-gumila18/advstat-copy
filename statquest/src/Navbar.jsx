@@ -233,7 +233,7 @@ export default function Navbar({
                       setProfileOpen(false);
                     }}
                   >
-                    Expertise Dashboard
+                    Dashboard
                   </button>
                   <button
                     className="btn ghost sm"

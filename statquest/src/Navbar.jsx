@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { getExpertiseTier } from './stats';
 
 const Logo = () => (
   <svg width="30" height="30" viewBox="0 0 16 16" aria-hidden="true" shapeRendering="crispEdges">
@@ -14,21 +15,28 @@ export default function Navbar({
   page,
   onNavigate,
   currentUser,
+  historyCount = 0,
   onOpenLogin,
   onOpenSignup,
   onLogout,
   variant = 'hero', // 'hero' | 'solid'
 }) {
-  const [questsOpen, setQuestsOpen] = useState(false);
+  const [lessonsOpen, setLessonsOpen] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const questsRef = useRef(null);
+
+  const lessonsRef = useRef(null);
+  const toolsRef = useRef(null);
   const profileRef = useRef(null);
 
   // Close dropdowns on click outside
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (questsRef.current && !questsRef.current.contains(e.target)) {
-        setQuestsOpen(false);
+      if (lessonsRef.current && !lessonsRef.current.contains(e.target)) {
+        setLessonsOpen(false);
+      }
+      if (toolsRef.current && !toolsRef.current.contains(e.target)) {
+        setToolsOpen(false);
       }
       if (profileRef.current && !profileRef.current.contains(e.target)) {
         setProfileOpen(false);
@@ -39,6 +47,10 @@ export default function Navbar({
   }, []);
 
   const isCover = page === 'cover';
+  const isLessons = page === 'lessons' || page === 'lessons-regression' || page === 'lessons-ztest';
+  const isTools = page === 'regression' || page === 'ztest';
+
+  const userTier = getExpertiseTier(historyCount);
 
   return (
     <header className={`sq-nav ${variant === 'hero' ? 'sq-nav-hero' : 'sq-nav-solid'}`}>
@@ -62,27 +74,87 @@ export default function Navbar({
             Home
           </button>
 
-          {/* Quests / Lessons Dropdown */}
-          <div className="sq-dropdown-wrapper" ref={questsRef}>
+          {/* Actual Learning Modules / Lessons Dropdown */}
+          <div className="sq-dropdown-wrapper" ref={lessonsRef}>
             <button
-              className={`sq-nav-link ${(page === 'regression' || page === 'ztest') ? 'active' : ''}`}
-              onClick={() => setQuestsOpen(!questsOpen)}
-              aria-expanded={questsOpen}
+              className={`sq-nav-link ${isLessons ? 'active' : ''}`}
+              onClick={() => {
+                setLessonsOpen(!lessonsOpen);
+                setToolsOpen(false);
+              }}
+              aria-expanded={lessonsOpen}
             >
-              Lessons <span className="sq-chevron">{questsOpen ? '▴' : '▾'}</span>
+              Lessons <span className="sq-chevron">{lessonsOpen ? '▴' : '▾'}</span>
             </button>
-            {questsOpen && (
+            {lessonsOpen && (
+              <div className="sq-dropdown-menu">
+                <button
+                  className={`sq-dropdown-item ${page === 'lessons' ? 'active' : ''}`}
+                  onClick={() => {
+                    onNavigate('lessons');
+                    setLessonsOpen(false);
+                  }}
+                >
+                  <span className="sq-item-icon">📚</span>
+                  <div className="sq-item-text">
+                    <b>All Learning Modules</b>
+                    <small>Theory, formulas, glossaries &amp; slide problems</small>
+                  </div>
+                </button>
+                <button
+                  className={`sq-dropdown-item ${page === 'lessons-regression' ? 'active' : ''}`}
+                  onClick={() => {
+                    onNavigate('lessons-regression');
+                    setLessonsOpen(false);
+                  }}
+                >
+                  <span className="sq-item-icon">📘</span>
+                  <div className="sq-item-text">
+                    <b>Module 1: Linear Regression</b>
+                    <small>Concepts, formulas, r &amp; R², worked examples</small>
+                  </div>
+                </button>
+                <button
+                  className={`sq-dropdown-item ${page === 'lessons-ztest' ? 'active' : ''}`}
+                  onClick={() => {
+                    onNavigate('lessons-ztest');
+                    setLessonsOpen(false);
+                  }}
+                >
+                  <span className="sq-item-icon">📙</span>
+                  <div className="sq-item-text">
+                    <b>Module 2: Hypothesis Testing</b>
+                    <small>7 steps, Z &amp; t tests, 8 slide problems</small>
+                  </div>
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Calculators / Tools Dropdown */}
+          <div className="sq-dropdown-wrapper" ref={toolsRef}>
+            <button
+              className={`sq-nav-link ${isTools ? 'active' : ''}`}
+              onClick={() => {
+                setToolsOpen(!toolsOpen);
+                setLessonsOpen(false);
+              }}
+              aria-expanded={toolsOpen}
+            >
+              Calculators <span className="sq-chevron">{toolsOpen ? '▴' : '▾'}</span>
+            </button>
+            {toolsOpen && (
               <div className="sq-dropdown-menu">
                 <button
                   className={`sq-dropdown-item ${page === 'regression' ? 'active' : ''}`}
                   onClick={() => {
                     onNavigate('regression');
-                    setQuestsOpen(false);
+                    setToolsOpen(false);
                   }}
                 >
-                  <span className="sq-item-icon"></span>
+                  <span className="sq-item-icon">📈</span>
                   <div className="sq-item-text">
-                    <b>Linear Regression</b>
+                    <b>Linear Regression Tool</b>
                     <small>Fit lines, Pearson r, R², scatter plot</small>
                   </div>
                 </button>
@@ -90,13 +162,13 @@ export default function Navbar({
                   className={`sq-dropdown-item ${page === 'ztest' ? 'active' : ''}`}
                   onClick={() => {
                     onNavigate('ztest');
-                    setQuestsOpen(false);
+                    setToolsOpen(false);
                   }}
                 >
-                  <span className="sq-item-icon"></span>
+                  <span className="sq-item-icon">⚖️</span>
                   <div className="sq-item-text">
-                    <b>Hypothesis Testing</b>
-                    <small>Z-tests &amp; t-tests in 7 steps</small>
+                    <b>Hypothesis Testing Solver</b>
+                    <small>Solve Z &amp; t tests in 7 steps with curve</small>
                   </div>
                 </button>
               </div>
@@ -107,14 +179,14 @@ export default function Navbar({
             className={`sq-nav-link ${page === 'home' ? 'active' : ''}`}
             onClick={() => onNavigate('home')}
           >
-            Adventure Mode
+            Dashboard
           </button>
 
           <button
             className={`sq-nav-link ${page === 'about' ? 'active' : ''}`}
             onClick={() => onNavigate('about')}
           >
-            About
+            How to Use
           </button>
         </nav>
 
@@ -127,28 +199,30 @@ export default function Navbar({
                 onClick={() => setProfileOpen(!profileOpen)}
                 aria-expanded={profileOpen}
               >
-                <span className="sq-avatar">{currentUser.avatar || 'DM'}</span>
+                <span className="sq-avatar">{currentUser.avatar || '📊'}</span>
                 <span className="sq-user-name">{currentUser.name}</span>
-                <span className="sq-user-lvl">Lv.{currentUser.level || 1}</span>
+                <span className="sq-user-lvl" style={{ background: userTier.color, color: '#1B1B3A', fontWeight: 800 }}>
+                  {userTier.label}
+                </span>
               </button>
 
               {profileOpen && (
                 <div className="sq-profile-dropdown">
                   <div className="sq-profile-header">
-                    <span className="sq-profile-big-avatar">{currentUser.avatar || 'DM'}</span>
+                    <span className="sq-profile-big-avatar">{currentUser.avatar || '📊'}</span>
                     <div>
                       <div className="sq-profile-name">{currentUser.name}</div>
-                      <div className="sq-profile-role">{currentUser.role || 'Data Mage'}</div>
+                      <div className="sq-profile-role">{currentUser.role || userTier.title}</div>
                     </div>
                   </div>
                   <div className="sq-profile-stats">
                     <div>
-                      <small>Adventurer Level</small>
-                      <b>Level {currentUser.level || 1}</b>
+                      <small>Expertise Level</small>
+                      <b>{userTier.label} ({userTier.rank})</b>
                     </div>
                     <div>
-                      <small>Current XP</small>
-                      <b>{currentUser.xp || 0} XP</b>
+                      <small>Total Analyses</small>
+                      <b>{historyCount} completed</b>
                     </div>
                   </div>
                   <button
@@ -159,7 +233,7 @@ export default function Navbar({
                       setProfileOpen(false);
                     }}
                   >
-                    Adventure Dashboard
+                    Expertise Dashboard
                   </button>
                   <button
                     className="btn ghost sm"

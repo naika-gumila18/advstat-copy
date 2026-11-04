@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 
 const AVATARS = [
-  { icon: '🧙‍♂️', role: 'Data Mage', desc: 'Master of regression lines and variance spells' },
-  { icon: '⚔️', role: 'Stats Knight', desc: 'Defender of the null hypothesis and alpha levels' },
-  { icon: '🏹', role: 'Probability Rogue', desc: 'Pinpoint precision with critical z and t values' },
-  { icon: '🔮', role: 'Sigma Oracle', desc: 'Sees the true distribution behind the samples' },
-  { icon: '🧮', role: 'Matrix Alchemist', desc: 'Transmutes raw tables into crystal clear findings' },
+  { icon: '📊', role: 'Statistical Analyst', desc: 'Specialized in descriptive metrics and linear regression modeling' },
+  { icon: '🔬', role: 'Research Methodologist', desc: 'Rigorously designs and evaluates statistical hypotheses and claims' },
+  { icon: '📈', role: 'Data Scientist', desc: 'Extracts empirical insights from fitted models and variance shares' },
+  { icon: '📐', role: 'Applied Statistician', desc: 'Connects critical thresholds and significance levels to real trials' },
+  { icon: '🧮', role: 'Quantitative Analyst', desc: 'Transforms raw sample data into clear, actionable conclusions' },
 ];
 
 export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLogin }) {
@@ -41,7 +41,7 @@ export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLog
     setError('');
 
     if (!loginEmail.trim() || !loginPassword.trim()) {
-      setError('Please enter both your Adventurer email and password.');
+      setError('Please enter both your email and password.');
       return;
     }
 
@@ -70,14 +70,12 @@ export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLog
       return;
     }
 
-    // If new login without prior signup, generate adventurer account
+    // If new login without prior signup, generate user profile
     const fallbackUser = {
-      name: loginEmail.split('@')[0] || 'Adventurer',
+      name: loginEmail.split('@')[0] || 'Analyst',
       email: loginEmail,
-      avatar: '🧙‍♂️',
-      role: 'Data Mage',
-      level: 1,
-      xp: 10,
+      avatar: '📊',
+      role: 'Statistical Analyst',
     };
     setSuccess(`Welcome, ${fallbackUser.name}!`);
     setTimeout(() => {
@@ -88,14 +86,12 @@ export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLog
 
   const handleDemoLogin = () => {
     const demoUser = {
-      name: 'Alex the Mage',
+      name: 'Alex Rivera',
       email: 'alex@statquest.io',
-      avatar: '🧙‍♂️',
-      role: 'Data Mage',
-      level: 3,
-      xp: 40,
+      avatar: '📊',
+      role: 'Senior Statistical Analyst',
     };
-    setSuccess('Logging in as Demo Adventurer...');
+    setSuccess('Logging in as Demo Analyst...');
     setTimeout(() => {
       onLogin(demoUser);
       onClose();
@@ -107,7 +103,7 @@ export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLog
     setError('');
 
     if (!signupName.trim()) {
-      setError('Please choose an Adventurer name.');
+      setError('Please enter your name.');
       return;
     }
     if (!signupEmail.trim()) {
@@ -129,8 +125,6 @@ export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLog
       password: signupPassword,
       avatar: selectedAvatar.icon,
       role: selectedAvatar.role,
-      level: 1,
-      xp: 10,
     };
 
     // Save to users list
@@ -188,10 +182,10 @@ export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLog
         {tab === 'login' && (
           <form onSubmit={handleLoginSubmit} className="sq-auth-form">
             <h2 className="pix" style={{ fontSize: 15, margin: '4px 0 14px' }}>
-              Adventurer Log In
+              Analyst Log In
             </h2>
             <label>
-              Email or Adventurer ID
+              Email or Analyst ID
               <input
                 type="text"
                 value={loginEmail}
@@ -213,7 +207,7 @@ export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLog
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '8px 0 16px' }}>
               <input type="checkbox" id="sq-rem" defaultChecked style={{ width: 'auto', margin: 0 }} />
               <label htmlFor="sq-rem" style={{ margin: 0, fontWeight: 600, fontSize: '0.9rem' }}>
-                Remember my adventurer session
+                Remember my session
               </label>
             </div>
 
@@ -229,7 +223,7 @@ export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLog
               style={{ width: '100%', padding: '10px 14px', margin: 0 }}
               onClick={handleDemoLogin}
             >
-              🧙 Play as Demo Wizard (Alex - Lv. 3)
+              📊 Continue as Demo Analyst (Alex)
             </button>
 
             <p style={{ textAlign: 'center', fontSize: '0.9rem', marginTop: 14 }}>
@@ -253,11 +247,11 @@ export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLog
         {tab === 'signup' && (
           <form onSubmit={handleSignupSubmit} className="sq-auth-form">
             <h2 className="pix" style={{ fontSize: 15, margin: '4px 0 14px' }}>
-              Join the Quest
+              Create Analyst Profile
             </h2>
 
             <label>
-              Adventurer Name
+              Full Name
               <input
                 type="text"
                 value={signupName}
@@ -279,7 +273,7 @@ export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLog
 
             <div style={{ margin: '10px 0' }}>
               <span style={{ fontWeight: 700, fontSize: '0.95rem', display: 'block', marginBottom: 6 }}>
-                Choose Your Adventurer Class
+                Choose Your Statistical Role
               </span>
               <div className="sq-avatar-grid">
                 {AVATARS.map((av) => (
@@ -321,7 +315,7 @@ export default function AuthModal({ isOpen, initialTab = 'login', onClose, onLog
             </div>
 
             <button type="submit" className="btn sq-submit-btn pix" style={{ width: '100%', margin: '14px 0 10px' }}>
-              CREATE ACCOUNT
+              CREATE PROFILE
             </button>
 
             <p style={{ textAlign: 'center', fontSize: '0.9rem', marginTop: 10 }}>

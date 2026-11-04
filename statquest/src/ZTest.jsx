@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, ReferenceLine, ResponsiveContainer, Tooltip } from 'recharts';
 import { hypTest, normPdf, tPdf, fmt, download } from './stats';
 import { parseProblem } from './parser';
@@ -9,16 +9,56 @@ const INIT = {
   xbar1: '', sd1: '', n1: '', xbar2: '', sd2: '', n2: '', d0: '0',
 };
 
-// Examples taken from the Module 9 slides
+// Examples taken from the Module 9 slides with actual given word problems
 const EXAMPLES = [
-  { label: 'Z one-sample: luggage', f: { dist: 'z', mode: 'one', tail: 'two', m0: '40', xbar: '38', sd: '9.5', n: '50', claim: 'Average luggage weight is 40 kg' } },
-  { label: 'Z one-sample: cereal boxes', f: { dist: 'z', mode: 'one', tail: 'two', m0: '500', xbar: '495', sd: '10', n: '36', claim: 'Mean cereal box weight is 500 g' } },
-  { label: 'Z one-sample: school scores', f: { dist: 'z', mode: 'one', tail: 'right', m0: '75', xbar: '78', sd: '8', n: '100', claim: 'Average score is higher than 75' } },
-  { label: 'Z two-sample: full-time vs working', f: { dist: 'z', mode: 'two', tail: 'two', spread: 'var', xbar1: '95', sd1: '10.5', n1: '50', xbar2: '88', sd2: '8.5', n2: '50', claim: 'Mean grades of the two groups differ' } },
-  { label: 't one-sample: light bulbs', f: { dist: 't', mode: 'one', tail: 'left', m0: '725', xbar: '700', sd: '40', n: '20', claim: 'Bulb life span is less than 725 hours' } },
-  { label: 't one-sample: coffee shop', f: { dist: 't', mode: 'one', tail: 'left', m0: '4', xbar: '3.6', sd: '0.8', n: '25', claim: 'Average waiting time is less than 4 minutes' } },
-  { label: 't two-sample: public vs private', f: { dist: 't', mode: 'two', tail: 'two', spread: 'var', xbar1: '86', sd1: '48', n1: '10', xbar2: '88', sd2: '38', n2: '12', claim: 'Chemistry scores differ (α = 0.05 assumed)' } },
-  { label: 't two-sample: teaching methods', f: { dist: 't', mode: 'two', tail: 'right', xbar1: '78', sd1: '7', n1: '35', xbar2: '75', sd2: '8', n2: '30', claim: 'Method B (sample 1) scores higher than Method A (sample 2)' } },
+  {
+    label: 'Slide 11 · Luggage weight (Z one-sample)',
+    slide: 'Slide 11',
+    problemText: 'A traveler claims that the average weight of his luggage is 40 kilos with a standard deviation of 9.5 kilos. Would you agree to this claim if a random sample of 50 luggage showed an average weight of 38 kilos using 0.05 level of significance.',
+    f: { dist: 'z', mode: 'one', tail: 'two', m0: '40', xbar: '38', sd: '9.5', n: '50', claim: 'Average luggage weight is 40 kg' },
+  },
+  {
+    label: 'Slide 12 · Cereal boxes (Z one-sample)',
+    slide: 'Slide 12',
+    problemText: "A manufacturer claims that the mean weight of their cereal boxes is 500 grams. To test this claim, a random sample of 36 cereal boxes is selected, and their weights are recorded. The sample mean weight is found to be 495 grams with a known population standard deviation of 10 grams. At a 5% level of significance, can you conclude that the mean weight of the cereal boxes is different from the manufacturer's claim?",
+    f: { dist: 'z', mode: 'one', tail: 'two', m0: '500', xbar: '495', sd: '10', n: '36', claim: 'Mean cereal box weight is 500 g' },
+  },
+  {
+    label: 'Slide 13 · School scores (Z one-sample)',
+    slide: 'Slide 13',
+    problemText: "A school district claims that the average score of its students in a standardized test is higher than 75. To test this claim, a random sample of 100 students is taken, and their average score is found to be 78 with a known population standard deviation of 8. Conduct a one-tailed z-test at a 5% level of significance to determine if there is enough evidence to support the district's claim.",
+    f: { dist: 'z', mode: 'one', tail: 'right', m0: '75', xbar: '78', sd: '8', n: '100', claim: 'Average score is higher than 75' },
+  },
+  {
+    label: 'Slide 15 · Full-time vs working students (Z two-sample)',
+    slide: 'Slide 15',
+    problemText: 'Fifty full time students were given an examination in Statistics and got an average grade of 95 with a variance of 10.5 while 50 working students have an average grade of 88 with a variance of 8.5. Is there a significant difference in the mean grade of the two groups at 0.05 level of significance?',
+    f: { dist: 'z', mode: 'two', tail: 'two', spread: 'var', xbar1: '95', sd1: '10.5', n1: '50', xbar2: '88', sd2: '8.5', n2: '50', claim: 'Mean grades of the two groups differ' },
+  },
+  {
+    label: 'Slide 18 · Light bulbs (t one-sample)',
+    slide: 'Slide 18',
+    problemText: 'A firm produces light bulbs having an average life span of 725 hours and with a standard deviation of 40 hours. If a random sample of 20 bulbs has an average life span of 700 hours, test the hypothesis that the life span of the lightbulbs is less than 725 hours.',
+    f: { dist: 't', mode: 'one', tail: 'left', m0: '725', xbar: '700', sd: '40', n: '20', claim: 'Bulb life span is less than 725 hours' },
+  },
+  {
+    label: 'Slide 19 · Coffee shop (t one-sample)',
+    slide: 'Slide 19',
+    problemText: "A coffee shop claims that the average waiting time for customers' orders is less than 4 minutes. To test this claim, a random sample of 25 orders is taken, and their waiting times are recorded. The sample mean waiting time is found to be 3.6 minutes with a sample standard deviation of 0.8 minutes. Conduct a one-tailed t-test at a 5% level of significance to determine if there is enough evidence to support the coffee shop's claim.",
+    f: { dist: 't', mode: 'one', tail: 'left', m0: '4', xbar: '3.6', sd: '0.8', n: '25', claim: 'Average waiting time is less than 4 minutes' },
+  },
+  {
+    label: 'Slide 21 · Public vs private school (t two-sample)',
+    slide: 'Slide 21',
+    problemText: 'Two samples are taken from two groups of students. Group 1 comes from public school and group 2 comes from private school. They were given examination in Chemistry subject and the results are shown below.\n\nGroup 1: n = 10, X̄₁ = 86, s₁² = 48\nGroup 2: n = 12, X̄₂ = 88, s₂² = 38\n\nTest whether the chemistry scores differ at the 0.05 level of significance.',
+    f: { dist: 't', mode: 'two', tail: 'two', spread: 'var', xbar1: '86', sd1: '48', n1: '10', xbar2: '88', sd2: '38', n2: '12', claim: 'Chemistry scores differ' },
+  },
+  {
+    label: 'Slide 22 · Teaching methods (t two-sample)',
+    slide: 'Slide 22',
+    problemText: 'An educational institute is implementing two teaching methods, A and B, for improving student performance in mathematics. They want to determine if method B leads to a higher average test score than method A. A sample of 30 students taught with method A has a mean test score of 75 with a standard deviation of 8. Another sample of 35 students taught with method B has a mean test score of 78 with a standard deviation of 7. Conduct a one-tailed t-test at a 5% level of significance to ascertain if method B results in a significantly higher average test score than method A.',
+    f: { dist: 't', mode: 'two', tail: 'right', xbar1: '78', sd1: '7', n1: '35', xbar2: '75', sd2: '8', n2: '30', claim: 'Method B (sample 1) scores higher than Method A (sample 2)' },
+  },
 ];
 
 function hypotheses(f) {
@@ -80,11 +120,12 @@ function curveData(r) {
   };
 }
 
-export default function ZTest({ onSave }) {
+export default function ZTest({ onSave, initialProblem, onNavigate }) {
   const [f, setF] = useState(INIT);
   const [res, setRes] = useState(null);
   const [err, setErr] = useState('');
   const [problem, setProblem] = useState('');
+  const [activeProblemLabel, setActiveProblemLabel] = useState('');
   const [info, setInfo] = useState(null);
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
   const pick = (patch) => { setF({ ...f, ...patch }); setRes(null); setErr(''); };
@@ -98,12 +139,15 @@ export default function ZTest({ onSave }) {
     const out = hypTest(form);
     if (out.error) { setErr(out.error); setRes(null); return; }
     setErr(''); setRes(out);
-    onSave({
-      module: 'ztest',
-      title: `${out.dist === 'z' ? 'Z' : 't'}-test (${out.mode}-sample): ${out.dist} = ${fmt(out.stat, 3)}, p = ${fmt(out.p)}`,
-      detail: `${out.reject ? 'Reject' : 'Fail to reject'} H₀ at α = ${out.alpha}`,
-    });
+    if (onSave) {
+      onSave({
+        module: 'ztest',
+        title: `${out.dist === 'z' ? 'Z' : 't'}-test (${out.mode}-sample): ${out.dist} = ${fmt(out.stat, 3)}, p = ${fmt(out.p)}`,
+        detail: `${out.reject ? 'Reject' : 'Fail to reject'} H₀ at α = ${out.alpha}`,
+      });
+    }
   };
+
   const readProblem = () => {
     const p = parseProblem(problem);
     if (p.error) { setErr(p.error); setInfo(null); setRes(null); return; }
@@ -112,11 +156,59 @@ export default function ZTest({ onSave }) {
     if (p.missing.length) { setErr(`I could not find: ${p.missing.join(', ')}. Please fill those in below, then press Solve.`); return; }
     setErr(''); run(next);
   };
+
+  const loadExampleByIndex = (idx) => {
+    const ex = EXAMPLES[idx];
+    if (ex) {
+      const next = { ...INIT, alpha: '0.05', ...ex.f };
+      setF(next);
+      setProblem(ex.problemText || '');
+      setActiveProblemLabel(ex.label);
+      setRes(null);
+      setErr('');
+      setInfo(null);
+      run(next);
+    }
+  };
+
   const loadExample = (e) => {
-    const ex = EXAMPLES[e.target.value];
-    if (ex) { setF({ ...INIT, alpha: '0.05', ...ex.f }); setRes(null); setErr(''); setInfo(null); }
+    const idx = e.target.value;
+    if (idx !== '') loadExampleByIndex(Number(idx));
     e.target.value = '';
   };
+
+  useEffect(() => {
+    if (initialProblem) {
+      // Find matching example or load directly from initialProblem fields
+      const next = {
+        ...INIT,
+        dist: initialProblem.dist || 'z',
+        mode: initialProblem.mode || 'one',
+        tail: initialProblem.tail || 'two',
+        alpha: initialProblem.alpha || '0.05',
+        spread: initialProblem.spread || 'sd',
+        claim: initialProblem.claim || '',
+        m0: initialProblem.m0 || '',
+        xbar: initialProblem.xbar || '',
+        sd: initialProblem.sd || '',
+        n: initialProblem.n || '',
+        xbar1: initialProblem.xbar1 || '',
+        sd1: initialProblem.sd1 || '',
+        n1: initialProblem.n1 || '',
+        xbar2: initialProblem.xbar2 || '',
+        sd2: initialProblem.sd2 || '',
+        n2: initialProblem.n2 || '',
+        d0: initialProblem.d0 || '0',
+      };
+      setF(next);
+      setProblem(initialProblem.problem || initialProblem.problemText || '');
+      setActiveProblemLabel(initialProblem.title || initialProblem.label || 'Loaded problem');
+      setRes(null);
+      setErr('');
+      setInfo(null);
+      run(next);
+    }
+  }, [initialProblem]);
 
   const steps = res && solution(res, H0, H1);
   const summary = () => res && [
@@ -143,43 +235,90 @@ export default function ZTest({ onSave }) {
 
   return (
     <>
-      <h1 className="pix"> Hypothesis Testing</h1>
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+        <h1 className="pix" style={{ margin: '8px 0 16px' }}>Hypothesis Testing</h1>
+        {onNavigate && (
+          <button className="btn sm ghost" onClick={() => onNavigate('lessons')}>
+            📖 View Hypothesis Lesson &amp; 7 Steps
+          </button>
+        )}
+      </div>
+
+      {/* Actual Given Word Problems Quick Select Bar */}
+      <section className="card" style={{ border: '2px solid #5B3CD6', background: 'rgba(27, 19, 62, 0.9)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+          <h2 style={{ margin: 0 }}>Actual Given Word Problems (Module 9 Slides)</h2>
+          <small style={{ color: '#B9A2FF' }}>Select any slide problem to auto-fill parameters, problem text &amp; solve</small>
+        </div>
+        <p style={{ margin: '8px 0 12px', fontSize: '0.92rem', color: '#D8E2F0' }}>
+          Click an actual problem below to solve it instantly:
+        </p>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          {EXAMPLES.map((ex, idx) => {
+            const isSelected = activeProblemLabel === ex.label;
+            return (
+              <button
+                key={ex.slide}
+                type="button"
+                className={`btn sm ${isSelected ? '' : 'ghost'}`}
+                onClick={() => loadExampleByIndex(idx)}
+              >
+                {isSelected ? '✓ ' : ''}{ex.slide}: {ex.f.dist.toUpperCase()} ({ex.f.mode})
+              </button>
+            );
+          })}
+        </div>
+
+        {problem && (
+          <div style={{ marginTop: 14, background: '#110B29', border: '1.5px solid #3F2B85', borderRadius: 10, padding: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+              <span className="badge on" style={{ fontSize: '0.72rem' }}>Active Word Problem</span>
+              {activeProblemLabel && <small style={{ color: '#FFE9A8' }}>{activeProblemLabel}</small>}
+            </div>
+            <p style={{ margin: 0, color: '#EDE8FF', fontSize: '0.94rem', whiteSpace: 'pre-line' }}>{problem}</p>
+          </div>
+        )}
+      </section>
+
       <div className="grid2">
         <section className="card">
           <h2>1. Set up the test</h2>
           <div className="paste">
             <label>Paste the whole problem and I will read it for you
-              <textarea rows="5" value={problem} onChange={(e) => setProblem(e.target.value)}
+              <textarea rows="4" value={problem} onChange={(e) => setProblem(e.target.value)}
                 placeholder="e.g. A coffee shop claims the average waiting time is less than 4 minutes. A random sample of 25 orders has a mean of 3.6 minutes and a sample standard deviation of 0.8 minutes. Test at the 5% level of significance." />
             </label>
             <div className="row">
-              <button className="btn" onClick={readProblem} disabled={!problem.trim()}>Read &amp; solve</button>
-              <button className="btn ghost" onClick={() => { setProblem(''); setInfo(null); }}>Clear</button>
+              <button className="btn sm" onClick={readProblem} disabled={!problem.trim()}>Read &amp; solve</button>
+              <button className="btn ghost sm" onClick={() => { setProblem(''); setActiveProblemLabel(''); setInfo(null); }}>Clear</button>
             </div>
             {info && (
-              <div className="found" role="status">
+              <div className="found" role="status" style={{ marginTop: 10 }}>
                 <b>Here is what I understood:</b>
                 <ul>{info.found.map((t) => <li key={t}>{t}</li>)}</ul>
                 {info.notes.map((n) => <p key={n} className="note">Note: {n}</p>)}
                 <small>Anything wrong? Fix it in the boxes below and press Solve.</small>
               </div>
             )}
-            <p className="or">— or enter everything manually —</p>
+            <p className="or">— or enter / configure manually —</p>
           </div>
-          {toggle('dist', [['z', 'Z-test'], ['t', 't-test']])}
-          {toggle('mode', [['one', 'One-sample'], ['two', 'Two-sample']])}
-          <p className="note">
-            {isZ ? 'Z-test: use when n ≥ 30 (σ known). ' : 't-test: use when σ is unknown or n < 30 (uses s and df). '}
-            {two ? 'Assumes two independent samples from normal populations.' : 'Assumes a normal population or a large sample.'}
-          </p>
-          <label>Load a class example
+
+          <label>Load from class examples dropdown
             <select defaultValue="" onChange={loadExample}>
-              <option value="" disabled>Choose a problem from the module…</option>
+              <option value="" disabled>Choose a problem from Module 9…</option>
               {EXAMPLES.map((ex, i) => <option key={ex.label} value={i}>{ex.label}</option>)}
             </select>
           </label>
-          <label>What are you testing? (optional)<input value={f.claim} onChange={set('claim')} placeholder="e.g. Average waiting time is less than 4 minutes" /></label>
-          <label>Test type
+
+          {toggle('dist', [['z', 'Z-test'], ['t', 't-test']])}
+          {toggle('mode', [['one', 'One-sample'], ['two', 'Two-sample']])}
+          <p className="note">
+            {isZ ? 'Z-test: use when n ≥ 30 or σ is known. ' : 't-test: use when σ is unknown or n < 30 (uses s and df). '}
+            {two ? 'Assumes two independent samples from normal populations.' : 'Assumes a normal population or a large sample.'}
+          </p>
+
+          <label>What are you testing? (optional claim)<input value={f.claim} onChange={set('claim')} placeholder="e.g. Average waiting time is less than 4 minutes" /></label>
+          <label>Test type (tail)
             <select value={f.tail} onChange={set('tail')}>
               <option value="two">Two-tailed (≠)</option><option value="left">Left-tailed (&lt;)</option><option value="right">Right-tailed (&gt;)</option>
             </select>
@@ -220,16 +359,16 @@ export default function ZTest({ onSave }) {
             </>
           )}
           {lowN && <p className="note">Warning: Your module uses the Z-test only when n ≥ 30. With a smaller sample, consider the t-test.</p>}
-          <div className="row">
+          <div className="row" style={{ marginTop: 14 }}>
             <button className="btn" onClick={() => run()}>Solve</button>
             <button className="btn ghost" onClick={() => pick({ ...INIT, dist: f.dist, mode: f.mode })}>Reset</button>
           </div>
-          {err && <p className="err" role="alert">Warning: {err}</p>}
+          {err && <p className="err" role="alert" style={{ marginTop: 12 }}>Warning: {err}</p>}
         </section>
 
         <section className="card">
           <h2>2. Solution (7 steps)</h2>
-          {!res ? <p>Fill in the form (or load a class example) and press Solve.</p> : (
+          {!res ? <p>Fill in the form (or load a class example above) and press Solve.</p> : (
             <>
               <div className="stats">
                 <div><small>{S}-statistic</small><b>{fmt(res.stat)}</b></div>

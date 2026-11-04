@@ -170,3 +170,66 @@ export function download(name, text) {
   a.href = url; a.download = name; a.click();
   URL.revokeObjectURL(url);
 }
+
+/* ---------- Expertise Level System ---------- */
+export function getExpertiseTier(count) {
+  const n = Number(count) || 0;
+  if (n >= 10) {
+    return {
+      level: 5,
+      label: 'Master',
+      rank: 'Tier 5',
+      title: 'Master Statistician',
+      color: '#FFD66B',
+      desc: 'Demonstrated mastery across advanced regression and hypothesis tests.',
+      nextThreshold: null,
+      needed: 0,
+    };
+  }
+  if (n >= 6) {
+    return {
+      level: 4,
+      label: 'Advanced',
+      rank: 'Tier 4',
+      title: 'Senior Statistical Analyst',
+      color: '#BFF0DC',
+      desc: 'Consistent analytical depth and thorough interpretation of results.',
+      nextThreshold: 10,
+      needed: 10 - n,
+    };
+  }
+  if (n >= 3) {
+    return {
+      level: 3,
+      label: 'Proficient',
+      rank: 'Tier 3',
+      title: 'Proficient Analyst',
+      color: '#B9A2FF',
+      desc: 'Competent problem solver capable of independent verification.',
+      nextThreshold: 6,
+      needed: 6 - n,
+    };
+  }
+  if (n >= 1) {
+    return {
+      level: 2,
+      label: 'Practitioner',
+      rank: 'Tier 2',
+      title: 'Statistical Practitioner',
+      color: '#FFE9A8',
+      desc: 'Hands-on practice started with real-world problems and data.',
+      nextThreshold: 3,
+      needed: 3 - n,
+    };
+  }
+  return {
+    level: 1,
+    label: 'Novice',
+    rank: 'Tier 1',
+    title: 'Novice Statistician',
+    color: '#A99BCF',
+    desc: 'Beginning statistical learning journey. Complete analyses to advance.',
+    nextThreshold: 1,
+    needed: 1,
+  };
+}

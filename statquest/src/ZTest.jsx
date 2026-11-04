@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, ReferenceLine, ResponsiveContainer, Tooltip } from 'recharts';
 import { hypTest, normPdf, tPdf, fmt, download } from './stats';
 import { parseProblem } from './parser';
+import Formula from './Formula';
 
 const INIT = {
   dist: 'z', mode: 'one', tail: 'two', alpha: '0.05', spread: 'sd', df: 'classic', claim: '',
@@ -68,6 +69,28 @@ function hypotheses(f) {
   const L = two ? (Number(d0) === 0 ? 'μ₁' : 'μ₁ − μ₂') : 'μ';
   const R = two ? (Number(d0) === 0 ? 'μ₂' : d0) : (f.m0 === '' ? 'μ₀' : f.m0);
   return [`H₀: ${L} ${sym[0]} ${R}`, `H₁: ${L} ${sym[1]} ${R}`];
+}
+
+function hypothesisMath(f, alternative) {
+  const symbols = { two: ['=', String.raw`\ne`], left: [String.raw`\ge`, '<'], right: [String.raw`\le`, '>'] }[f.tail];
+  const two = f.mode === 'two';
+  const difference = String(f.d0 ?? '').trim() === '' ? 0 : Number(f.d0);
+  const lhs = two
+    ? (difference === 0 ? String.raw`\mu_1` : String.raw`\mu_1-\mu_2`)
+    : String.raw`\mu`;
+  const rhs = two
+    ? (difference === 0 ? String.raw`\mu_2` : String(difference))
+    : (String(f.m0).trim() || String.raw`\mu_0`);
+  return String.raw`H_${alternative}: ${lhs} ${symbols[alternative === '0' ? 0 : 1]} ${rhs}`;
+}
+
+function testStatisticMath(f) {
+  const statistic = f.dist === 'z' ? 'z' : 't';
+  const spread = f.dist === 'z' ? String.raw`\sigma` : 's';
+  if (f.mode === 'one') {
+    return String.raw`${statistic}=\frac{\bar{x}-\mu_0}{${spread}/\sqrt{n}}`;
+  }
+  return String.raw`${statistic}=\frac{(\bar{x}_1-\bar{x}_2)-D_0}{\sqrt{\frac{${spread}_1^2}{n_1}+\frac{${spread}_2^2}{n_2}}}`;
 }
 
 function solution(r, H0, H1) {
@@ -375,6 +398,11 @@ export default function ZTest({ onSave, initialProblem, onNavigate }) {
                 <div><small>Critical value(s)</small><b>{res.crit.map((c) => fmt(c)).join(', ')}</b></div>
                 <div><small>p-value</small><b>{fmt(res.p, 6)}</b></div>
                 {res.df != null && <div><small>df</small><b>{fmt(res.df, 2)}</b></div>}
+              </div>
+              <div className="formula-grid sq-test-formulas">
+                <Formula title="Null hypothesis" math={hypothesisMath(f, '0')} />
+                <Formula title="Alternative hypothesis" math={hypothesisMath(f, '1')} />
+                <Formula title="Test statistic" math={testStatisticMath(f)} />
               </div>
               <p className={'verdict ' + (res.reject ? 'rej' : 'ftr')}>{res.reject ? 'Reject H₀' : 'Fail to reject H₀'}</p>
               <ol className="steps">

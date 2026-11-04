@@ -480,7 +480,29 @@ h3 {
   color: #fff;
 }
 .sq-chip-icon {
-  font-size: 15px;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+}
+.sq-module-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.sq-module-icon {
+  width: 21px;
+  height: 21px;
+  flex: 0 0 21px;
+}
+.sq-achievement {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.sq-achievement-icon {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
 }
 
 /* Bottom Footer Bar (Inspo Style) */
@@ -811,6 +833,82 @@ td input {
   border-radius: 10px;
   color: #FFFFFF;
   text-shadow: 0 0 10px rgba(185, 162, 255, 0.4);
+}
+.formula-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 12px;
+}
+.formula-card {
+  min-width: 0;
+  margin: 0;
+  padding: 14px;
+  border: 1.5px solid #3F2B85;
+  border-radius: 12px;
+  background: #110B29;
+}
+.formula-title {
+  color: #FFE9A8;
+  font-weight: 800;
+}
+.formula-equation {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 12px 6px;
+  color: #EDE8FF;
+  line-height: normal;
+  -webkit-overflow-scrolling: touch;
+}
+.formula-equation .katex-display {
+  width: max-content;
+  min-width: 100%;
+  margin: 0.55em 0;
+  text-align: center;
+}
+.formula-two-sample .formula-equation {
+  padding: 16px 6px;
+  min-height: 85px;
+}
+.formula-welch .formula-equation {
+  padding: 20px 8px;
+  min-height: 125px;
+}
+@media (min-width: 768px) {
+  .formula-card-wide {
+    grid-column: span 2;
+  }
+}
+.formula-description {
+  margin: 4px 0 0;
+  color: #D8E2F0;
+  font-size: 0.9rem;
+}
+.formula-variables {
+  margin: 10px 0 0;
+  font-size: 0.86rem;
+}
+.formula-variables > div {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 4px;
+}
+.formula-variables dt {
+  flex: 0 0 auto;
+  margin: 0;
+  color: #B9A2FF;
+}
+.formula-variables dd {
+  margin: 0;
+  color: #D8E2F0;
+}
+.formula-error {
+  color: #FFB3C2;
+  font-family: inherit;
+  font-size: 0.9em;
+}
+.math-inline {
+  white-space: nowrap;
 }
 .stats {
   display: grid;

@@ -1,3 +1,5 @@
+import { InlineFormula } from './Formula';
+
 export default function About({ onNavigate }) {
   return (
     <>
@@ -53,10 +55,10 @@ export default function About({ onNavigate }) {
             <br />
             Click <b>Calculate</b>. StatQuest computes:
             <ul>
-              <li>The regression equation: <code>Y = a + bX</code> (with your custom variable names).</li>
-              <li>Slope (<code>b</code>) and Y-intercept (<code>a</code>).</li>
-              <li>Pearson correlation coefficient (<code>r</code>) and qualitative strength (weak, moderate, strong).</li>
-              <li>Coefficient of determination (<code>R²</code>), explaining the percentage of variation in Y explained by X.</li>
+              <li>The regression equation: <InlineFormula math={String.raw`\hat{Y}=a+bX`} /> (with your custom variable names).</li>
+              <li>Slope (<InlineFormula math="b" />) and Y-intercept (<InlineFormula math="a" />).</li>
+              <li>Pearson correlation coefficient (<InlineFormula math="r" />) and qualitative strength (weak, moderate, strong).</li>
+              <li>Coefficient of determination (<InlineFormula math="R^2" />), explaining the percentage of variation in Y explained by X.</li>
             </ul>
           </li>
           <li>
@@ -76,9 +78,9 @@ export default function About({ onNavigate }) {
             <b>Step 1: Choose distribution &amp; sample mode</b>
             <br />
             <ul>
-              <li><b>Z-test:</b> Use when population standard deviation (<code>σ</code>) is known or sample size is large (<code>n ≥ 30</code>).</li>
-              <li><b>t-test:</b> Use when population standard deviation is unknown (sample <code>s</code> is used) or sample size is small (<code>n &lt; 30</code>).</li>
-              <li><b>One-sample vs. Two-sample:</b> Choose <i>One-sample</i> to test against a known constant (<code>μ₀</code>), or <i>Two-sample</i> to compare the means of two independent groups.</li>
+              <li><b>Z-test:</b> Use when population standard deviation (<InlineFormula math={String.raw`\sigma`} />) is known or sample size is large (<InlineFormula math={String.raw`n\ge30`} />).</li>
+              <li><b>t-test:</b> Use when population standard deviation is unknown (sample <InlineFormula math="s" /> is used) or sample size is small (<InlineFormula math={String.raw`n<30`} />).</li>
+              <li><b>One-sample vs. Two-sample:</b> Choose <i>One-sample</i> to test against a known constant (<InlineFormula math={String.raw`\mu_0`} />), or <i>Two-sample</i> to compare the means of two independent groups.</li>
             </ul>
           </li>
           <li>
@@ -87,7 +89,7 @@ export default function About({ onNavigate }) {
             <ul>
               <li><b>Load a class example:</b> Select any given textbook problem (e.g. luggage weight, cereal boxes, coffee shop wait times) to auto-fill every parameter and the exact problem text.</li>
               <li><b>Automatic text parser:</b> Paste the complete word problem into the text box and click <i>Read &amp; solve</i>. StatQuest will parse the hypothesized mean, sample mean, standard deviation/variance, and sample size.</li>
-              <li><b>Manual input:</b> Select your test direction (Two-tailed <code>≠</code>, Left-tailed <code>&lt;</code>, Right-tailed <code>&gt;</code>), significance level (<code>α = 0.10, 0.05, 0.01</code>), and type in the sample numbers.</li>
+              <li><b>Manual input:</b> Select your test direction (Two-tailed <InlineFormula math={String.raw`\ne`} />, Left-tailed <InlineFormula math={String.raw`\lt`} />, Right-tailed <InlineFormula math={String.raw`\gt`} />), significance level (<InlineFormula math={String.raw`\alpha=0.10,\ 0.05,\ 0.01`} />), and type in the sample numbers.</li>
             </ul>
           </li>
           <li>
@@ -95,13 +97,13 @@ export default function About({ onNavigate }) {
             <br />
             Click <b>Solve</b> to generate the complete solution formatted according to standard course requirements:
             <ol style={{ marginTop: 6, paddingLeft: 20 }}>
-              <li>State the null hypothesis (<code>H₀</code>).</li>
-              <li>State the alternative hypothesis (<code>H₁</code>).</li>
-              <li>Set the significance level <code>α</code> (and confidence level <code>1 − α</code>).</li>
+              <li>State the null hypothesis (<InlineFormula math={String.raw`H_0`} />).</li>
+              <li>State the alternative hypothesis (<InlineFormula math={String.raw`H_1`} />).</li>
+              <li>Set the significance level <InlineFormula math={String.raw`\alpha`} /> (and confidence level <InlineFormula math={String.raw`1-\alpha`} />).</li>
               <li>Collect and summarize sample data.</li>
               <li>Calculate the test statistic (Z or t) with step-by-step arithmetic.</li>
               <li>Construct the rejection and acceptance regions with critical values.</li>
-              <li>Draw a formal statistical conclusion (Reject <code>H₀</code> vs. Fail to reject <code>H₀</code>) with an interpretive statement.</li>
+              <li>Draw a formal statistical conclusion (Reject <InlineFormula math={String.raw`H_0`} /> vs. Fail to reject <InlineFormula math={String.raw`H_0`} />) with an interpretive statement.</li>
             </ol>
           </li>
           <li>
@@ -138,7 +140,7 @@ export default function About({ onNavigate }) {
         <h2>Input Formatting Tips</h2>
         <ul>
           <li><b>Decimal values:</b> Enter decimals using periods (e.g. <code>3.14</code>, <code>0.05</code>).</li>
-          <li><b>Standard deviation vs. Variance:</b> Use the dropdown selector in Hypothesis Testing to indicate whether your problem gives the standard deviation (<code>σ</code> or <code>s</code>) or the variance (<code>σ²</code> or <code>s²</code>).</li>
+          <li><b>Standard deviation vs. Variance:</b> Use the dropdown selector in Hypothesis Testing to indicate whether your problem gives the standard deviation (<InlineFormula math={String.raw`\sigma`} /> or <InlineFormula math="s" />) or the variance (<InlineFormula math={String.raw`\sigma^2`} /> or <InlineFormula math="s^2" />).</li>
           <li><b>Pasting data in Regression:</b> Separate X and Y with either a comma or spaces (e.g. <code>1, 52</code> or <code>1 52</code>). One observation per line.</li>
           <li><b>Need formulas, theory, or glossary?</b> Visit the <b>Lessons</b> section in the navigation menu for complete learning modules with theoretical formulas, assumptions, and glossary definitions.</li>
         </ul>

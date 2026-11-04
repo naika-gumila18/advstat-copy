@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { regression, strength, parsePairs, parseText, fmt, download } from './stats';
 import { identifyVariables } from './variables';
+import { InlineFormula } from './Formula';
 
 const SAMPLES = {
   'Worked example (5 points)': {
@@ -272,7 +273,11 @@ export default function Regression({ onSave, initialProblem, onNavigate }) {
             <p>Enter at least 3 pairs (or select a given word problem above) and press Calculate. Your results will appear here.</p>
           ) : (
             <>
-              <p className="big">{eq}</p>
+              <p className="big math-result">
+                <InlineFormula
+                  math={String.raw`\hat{Y}=${fmt(res.a)}${res.b < 0 ? '-' : '+'}${fmt(Math.abs(res.b))}X`}
+                />
+              </p>
               {named && (
                 <p>
                   Predicted <b>{yn}</b> = {fmt(res.a)} {res.b < 0 ? '−' : '+'} {fmt(Math.abs(res.b))} × <b>{xn}</b>

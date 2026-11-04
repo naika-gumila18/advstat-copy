@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Formula from './Formula';
 
 const REGRESSION_GLOSSARY = [
   ['Slope (b)', 'The predicted change in the dependent variable (Y) for each 1-unit increase in the independent variable (X).'],
@@ -364,23 +365,33 @@ export default function Lessons({
           {/* Section 2: Mathematical Formulas */}
           <section className="card">
             <h2>2. Mathematical Formulas</h2>
-            <pre>{`Slope (b):
-b = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)²
-  = [n·Σ(xy) − (Σx)(Σy)] / [n·Σ(x²) − (Σx)²]
-
-Y-Intercept (a):
-a = ȳ − b·x̄
-
-Pearson Correlation Coefficient (r):
-r = Σ(x − x̄)(y − ȳ) / √[Σ(x − x̄)² · Σ(y − ȳ)²]
-  = [n·Σ(xy) − (Σx)(Σy)] / √{[n·Σ(x²) − (Σx)²] · [n·Σ(y²) − (Σy)²]}
-
-Coefficient of Determination (R²):
-R² = 1 − (SSE / SST) = (r)² in simple linear regression
-where:
-  SST (Total Sum of Squares) = Σ(y − ȳ)²
-  SSE (Error Sum of Squares) = Σ(y − ŷ)²
-  SSR (Regression Sum of Squares) = Σ(ŷ − ȳ)²`}</pre>
+            <div className="formula-grid">
+              <Formula
+                title="Slope (b)"
+                math={String.raw`b=\frac{\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}{\sum_{i=1}^{n}(x_i-\bar{x})^2}`}
+                description="The least-squares slope is the change in predicted Y for a one-unit increase in X."
+              />
+              <Formula
+                title="Y-Intercept (a)"
+                math={String.raw`a=\bar{y}-b\bar{x}`}
+                description="The fitted value of Y when X is zero."
+              />
+              <Formula
+                title="Pearson Correlation (r)"
+                math={String.raw`r=\frac{\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\left[\sum_{i=1}^{n}(x_i-\bar{x})^2\right]\left[\sum_{i=1}^{n}(y_i-\bar{y})^2\right]}}`}
+                description="Measures the direction and strength of the linear association."
+              />
+              <Formula
+                title="Coefficient of Determination (R²)"
+                math={String.raw`R^2=1-\frac{SSE}{SST}=r^2`}
+                description="In simple linear regression with an intercept, R² equals r²."
+                variables={[
+                  [String.raw`SST=\sum_{i=1}^{n}(y_i-\bar{y})^2`, 'Total sum of squares.'],
+                  [String.raw`SSE=\sum_{i=1}^{n}(y_i-\hat{y}_i)^2`, 'Error sum of squares.'],
+                  [String.raw`SSR=\sum_{i=1}^{n}(\hat{y}_i-\bar{y})^2`, 'Regression sum of squares.'],
+                ]}
+              />
+            </div>
           </section>
 
           {/* Section 3: Assumptions & Limitations */}
@@ -611,26 +622,65 @@ where:
           {/* Section 3: Formulas */}
           <section className="card">
             <h2>3. Hypothesis Testing Formulas</h2>
-            <pre>{`Z-Test (One-sample):
-  z = (x̄ − μ₀) / (σ / √n)
-
-Z-Test (Two-sample):
-  z = [(x̄₁ − x̄₂) − D₀] / √[σ₁²/n₁ + σ₂²/n₂]
-  (where D₀ is the hypothesized difference, typically 0)
-
-t-Test (One-sample):
-  t = (x̄ − μ₀) / (s / √n),    df = n − 1
-
-t-Test (Two-sample, equal variance / standard table):
-  t = [(x̄₁ − x̄₂) − D₀] / √[s₁²/n₁ + s₂²/n₂],    df = n₁ + n₂ − 2
-
-Welch–Satterthwaite df (unequal variances):
-  df = (s₁²/n₁ + s₂²/n₂)² / [ (s₁²/n₁)²/(n₁ − 1) + (s₂²/n₂)²/(n₂ − 1) ]
-
-p-value Rules:
-  Left-tailed:    p = Φ(z)  or  P(T ≤ t)
-  Right-tailed:   p = 1 − Φ(z)  or  P(T ≥ t)
-  Two-tailed:     p = 2 · [1 − Φ(|z|)]  or  2 · P(T ≥ |t|)`}</pre>
+            <div className="formula-grid">
+              <Formula
+                title="One-sample Z-test"
+                math={String.raw`z=\frac{\bar{x}-\mu_0}{\sigma/\sqrt{n}}`}
+                description="Uses the known population standard deviation σ."
+              />
+              <Formula
+                title="Two-sample Z-test"
+                className="formula-two-sample"
+                math={String.raw`z = \dfrac{(\bar{x}_1 - \bar{x}_2) - D_0}{\sqrt{\dfrac{\sigma_1^2}{n_1} + \dfrac{\sigma_2^2}{n_2}}}`}
+                description="D₀ is the hypothesized difference between population means."
+                variables={[
+                  [String.raw`\bar{x}_1, \bar{x}_2`, 'Sample means for group 1 and group 2.'],
+                  [String.raw`D_0`, 'Hypothesized difference between population means (often 0).'],
+                  [String.raw`\sigma_1^2, \sigma_2^2`, 'Known population variances for group 1 and group 2.'],
+                  [String.raw`n_1, n_2`, 'Sample sizes for group 1 and group 2.'],
+                ]}
+              />
+              <Formula
+                title="One-sample t-test"
+                math={String.raw`t=\frac{\bar{x}-\mu_0}{s/\sqrt{n}},\qquad df=n-1`}
+                description="Uses the sample standard deviation s."
+              />
+              <Formula
+                title="Two-sample t-test"
+                className="formula-two-sample"
+                math={String.raw`t = \dfrac{(\bar{x}_1 - \bar{x}_2) - D_0}{\sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}}`}
+                description="The displayed standard error matches the calculator’s two-sample t statistic."
+                variables={[
+                  [String.raw`\bar{x}_1, \bar{x}_2`, 'Sample means for group 1 and group 2.'],
+                  [String.raw`D_0`, 'Hypothesized difference between population means (often 0).'],
+                  [String.raw`s_1^2, s_2^2`, 'Sample variances for group 1 and group 2.'],
+                  [String.raw`n_1, n_2`, 'Sample sizes for group 1 and group 2.'],
+                ]}
+              />
+              <Formula
+                title="Classic two-sample degrees of freedom"
+                math={String.raw`df=n_1+n_2-2`}
+                description="The calculator also offers Welch–Satterthwaite degrees of freedom for unequal variances."
+              />
+              <Formula
+                title="Welch–Satterthwaite degrees of freedom"
+                className="formula-card-wide formula-welch"
+                math={String.raw`df = \dfrac{\left(\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}\right)^2}{\dfrac{\left(\dfrac{s_1^2}{n_1}\right)^2}{n_1 - 1} + \dfrac{\left(\dfrac{s_2^2}{n_2}\right)^2}{n_2 - 1}}`}
+                description="Effective degrees of freedom for two-sample t-tests when population variances are assumed unequal."
+                variables={[
+                  [String.raw`s_1^2, s_2^2`, 'Sample variances for group 1 and group 2.'],
+                  [String.raw`n_1, n_2`, 'Sample sizes for group 1 and group 2.'],
+                ]}
+              />
+              <Formula
+                title="P-value rules"
+                math={String.raw`\begin{aligned}
+                  \text{Left-tailed: }&p=\Phi(z)\ \text{or }P(T\le t)\\
+                  \text{Right-tailed: }&p=1-\Phi(z)\ \text{or }P(T\ge t)\\
+                  \text{Two-tailed: }&p=2[1-\Phi(|z|)]\ \text{or }2P(T\ge|t|)
+                \end{aligned}`}
+              />
+            </div>
           </section>
 
           {/* Section 4: Assumptions & Limitations */}

@@ -1,5 +1,6 @@
 import HeroBackground from './HeroBackground';
 import Navbar from './Navbar';
+import PixelIcon from './PixelIcon';
 
 export default function Cover({
   onStart,
@@ -36,7 +37,7 @@ export default function Cover({
 
         <p className="sq-hero-subtitle">
           Master the power of statistics through hands-on data analysis,
-          hypothesis testing, and structured expertise progression.
+          hypothesis testing, and structured lessons.
         </p>
 
         <div className="sq-hero-actions">
@@ -56,7 +57,7 @@ export default function Cover({
             className="sq-chip-btn"
             onClick={() => onNavigate('lessons')}
           >
-            <span className="sq-chip-icon">📚</span>
+            <PixelIcon name="book" className="sq-chip-icon" />
             <span>Learning Modules</span>
           </button>
           <button
@@ -64,7 +65,7 @@ export default function Cover({
             className="sq-chip-btn"
             onClick={() => onNavigate('regression')}
           >
-            <span className="sq-chip-icon">📈</span>
+            <PixelIcon name="regression" className="sq-chip-icon" />
             <span>Simple Linear Regression</span>
           </button>
           <button
@@ -72,7 +73,7 @@ export default function Cover({
             className="sq-chip-btn"
             onClick={() => onNavigate('ztest')}
           >
-            <span className="sq-chip-icon">⚖️</span>
+            <PixelIcon name="hypothesis" className="sq-chip-icon" />
             <span>Hypothesis Testing</span>
           </button>
           <button
@@ -80,7 +81,7 @@ export default function Cover({
             className="sq-chip-btn"
             onClick={() => onNavigate('home')}
           >
-            <span className="sq-chip-icon">📊</span>
+            <PixelIcon name="dashboard" className="sq-chip-icon" />
             <span>Expertise Dashboard</span>
           </button>
           <button
@@ -88,7 +89,7 @@ export default function Cover({
             className="sq-chip-btn"
             onClick={onLearn}
           >
-            <span className="sq-chip-icon">💡</span>
+            <PixelIcon name="idea" className="sq-chip-icon" />
             <span>How to Use</span>
           </button>
         </div>

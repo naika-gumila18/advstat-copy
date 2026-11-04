@@ -7,6 +7,8 @@ import Lessons from './Lessons';
 import Navbar from './Navbar';
 import AuthModal from './AuthModal';
 import { getExpertiseTier } from './stats';
+import StatQuestChat from './chat/StatQuestChat.jsx';
+import PixelIcon from './PixelIcon';
 
 const loadHistory = () => {
   try {
@@ -167,7 +169,10 @@ export default function App() {
                     const modTier = getExpertiseTier(count(k));
                     return (
                       <section className="card" key={k}>
-                        <h2>{t}</h2>
+                        <h2 className="sq-module-title">
+                          <PixelIcon name={k === 'regression' ? 'regression' : 'hypothesis'} className="sq-module-icon" />
+                          {t}
+                        </h2>
                         <p>{d}</p>
 
                         <div style={{ margin: '14px 0 10px', padding: '10px 12px', background: 'rgba(124, 77, 255, 0.15)', border: '1.5px solid #3F2B85', borderRadius: 10 }}>
@@ -241,7 +246,8 @@ export default function App() {
                     <h3 style={{ margin: '14px 0 6px' }}>Competency Milestones</h3>
                     <div className="badges">
                       {badges.map(([l, on]) => (
-                        <span key={l} className={'badge' + (on ? ' on' : '')}>
+                        <span key={l} className={'badge sq-achievement' + (on ? ' on' : '')}>
+                          <PixelIcon name={on ? 'award' : 'star'} className="sq-achievement-icon" />
                           {l}
                         </span>
                       ))}
@@ -329,6 +335,7 @@ export default function App() {
           </footer>
         </div>
       )}
+      <StatQuestChat />
     </>
   );
 }

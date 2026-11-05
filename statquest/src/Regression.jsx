@@ -4,8 +4,11 @@ import { regression, strength, parsePairs, parseText, fmt, download } from './st
 import { identifyVariables } from './variables';
 import { InlineFormula } from './Formula';
 
+const workedExampleWorkbook = `${import.meta.env.BASE_URL}worked-example-linear-regression.xlsx`;
+
 const SAMPLES = {
   'Worked example ': {
+    id: 'worked-example',
     title: 'Worked example ',
     problem: 'A researcher wants to find the linear relationship between variable X and variable Y using an observed 5-point sample: (1, 2), (2, 4), (3, 5), (4, 4), (5, 5). Find the regression line Y = a + bX, Pearson correlation coefficient r, and coefficient of determination R².',
     pairs: [[1, 2], [2, 4], [3, 5], [4, 4], [5, 5]],
@@ -38,6 +41,7 @@ export default function Regression({ onSave, initialProblem, onNavigate }) {
   const [names, setNames] = useState({ x: '', y: '' });
   const [problem, setProblem] = useState('');
   const [activeProblemKey, setActiveProblemKey] = useState('');
+  const [isWorkedExample, setIsWorkedExample] = useState(false);
   const [vars, setVars] = useState(null);
   const [swapped, setSwapped] = useState(false);
 
@@ -77,6 +81,7 @@ export default function Regression({ onSave, initialProblem, onNavigate }) {
     setNames(newNames);
     setProblem(smp.problem || '');
     setActiveProblemKey(keyName || smp.title || smp.id || '');
+    setIsWorkedExample(smp.id === 'worked-example');
     setErr('');
     if (smp.problem) {
       const v = identifyVariables(smp.problem);
@@ -119,6 +124,7 @@ export default function Regression({ onSave, initialProblem, onNavigate }) {
     setPaste('');
     setProblem('');
     setActiveProblemKey('');
+    setIsWorkedExample(false);
     setVars(null);
     setRes(null);
     setErr('');
@@ -297,7 +303,13 @@ export default function Regression({ onSave, initialProblem, onNavigate }) {
                 <li><b>R² ({fmt(res.r2)}):</b> {Number.isFinite(res.r2) ? `${fmt(res.r2 * 100, 2)}% of the total variation in ${yn} is explained by ${xn}.` : `undefined because ${yn} does not vary.`}</li>
               </ul>
               <p className="note">Correlation does not imply causation. Thresholds on |r|: &lt;0.2 very weak, 0.2–0.39 weak, 0.4–0.59 moderate, 0.6–0.79 strong, ≥0.8 very strong.</p>
-              <button className="btn ghost" onClick={() => download('regression-results.txt', summary())}>Download results</button>
+              {isWorkedExample ? (
+                <a className="btn ghost" href={workedExampleWorkbook} download="linear-regression-worked-example.xlsx">
+                  Download solution
+                </a>
+              ) : (
+                <button className="btn ghost" onClick={() => download('regression-results.txt', summary())}>Download results</button>
+              )}
             </>
           )}
         </section>

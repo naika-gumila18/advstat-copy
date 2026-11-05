@@ -75,6 +75,15 @@ export default function App() {
     setAuthOpen(true);
   };
 
+  const handleStart = () => {
+    if (!currentUser) {
+      handleOpenLogin();
+      return;
+    }
+
+    setPage('home');
+  };
+
   const handleOpenSignup = () => {
     setAuthTab('signup');
     setAuthOpen(true);
@@ -110,7 +119,7 @@ export default function App() {
 
       {page === 'cover' ? (
         <Cover
-          onStart={() => setPage('home')}
+          onStart={handleStart}
           onLearn={() => setPage('about')}
           onNavigate={(p) => setPage(p)}
           currentUser={currentUser}

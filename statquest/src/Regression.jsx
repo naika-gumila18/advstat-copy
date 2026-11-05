@@ -5,8 +5,8 @@ import { identifyVariables } from './variables';
 import { InlineFormula } from './Formula';
 
 const SAMPLES = {
-  'Worked example (5 points)': {
-    title: 'Worked example (5 points)',
+  'Worked example ': {
+    title: 'Worked example ',
     problem: 'A researcher wants to find the linear relationship between variable X and variable Y using an observed 5-point sample: (1, 2), (2, 4), (3, 5), (4, 4), (5, 5). Find the regression line Y = a + bX, Pearson correlation coefficient r, and coefficient of determination R².',
     pairs: [[1, 2], [2, 4], [3, 5], [4, 4], [5, 5]],
     x: 'Predictor X',

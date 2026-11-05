@@ -74,6 +74,13 @@ export default function Navbar({
             Home
           </button>
 
+          <button
+            className={`sq-nav-link ${page === 'home' ? 'active' : ''}`}
+            onClick={() => onNavigate('home')}
+          >
+            Dashboard
+          </button>
+
           {/* Actual Learning Modules / Lessons Dropdown */}
           <div className="sq-dropdown-wrapper" ref={lessonsRef}>
             <button
@@ -174,13 +181,6 @@ export default function Navbar({
               </div>
             )}
           </div>
-
-          <button
-            className={`sq-nav-link ${page === 'home' ? 'active' : ''}`}
-            onClick={() => onNavigate('home')}
-          >
-            Dashboard
-          </button>
 
           <button
             className={`sq-nav-link ${page === 'about' ? 'active' : ''}`}

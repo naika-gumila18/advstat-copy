@@ -27,7 +27,7 @@ const HYPOTHESIS_GLOSSARY = [
 const REGRESSION_PROBLEMS = [
   {
     id: 'worked-example',
-    title: 'Worked Example (5 Points)',
+    title: 'Worked Example',
     problem:
       'A researcher wants to find the linear relationship between variable X and variable Y using an observed 5-point sample: (1, 2), (2, 4), (3, 5), (4, 4), (5, 5). Determine the regression equation Y = a + bX, the Pearson correlation coefficient r, and the coefficient of determination R².',
     xName: 'X (Predictor)',
@@ -115,7 +115,7 @@ const REGRESSION_PROBLEMS = [
 const HYPOTHESIS_PROBLEMS = [
   {
     id: 's11',
-    slide: 'Slide 11',
+    slide: 'Sample 1',
     title: 'Traveler Luggage Weight',
     testType: 'Z-test (One-sample, Two-tailed)',
     problem:
@@ -135,7 +135,7 @@ const HYPOTHESIS_PROBLEMS = [
   },
   {
     id: 's12',
-    slide: 'Slide 12',
+    slide: 'Sample 2',
     title: 'Cereal Box Packaging Weight',
     testType: 'Z-test (One-sample, Two-tailed)',
     problem:
@@ -155,7 +155,7 @@ const HYPOTHESIS_PROBLEMS = [
   },
   {
     id: 's13',
-    slide: 'Slide 13',
+    slide: 'Sample 3',
     title: 'School District Standardized Test Scores',
     testType: 'Z-test (One-sample, Right-tailed)',
     problem:
@@ -175,7 +175,7 @@ const HYPOTHESIS_PROBLEMS = [
   },
   {
     id: 's15',
-    slide: 'Slide 15',
+    slide: 'Sample 4',
     title: 'Full-time vs. Working Students Exam Grades',
     testType: 'Z-test (Two-sample, Two-tailed, Given Variances)',
     problem:
@@ -195,7 +195,7 @@ const HYPOTHESIS_PROBLEMS = [
   },
   {
     id: 's18',
-    slide: 'Slide 18',
+    slide: 'Sample 5',
     title: 'Light Bulb Life Span',
     testType: 't-test (One-sample, Left-tailed, n < 30)',
     problem:
@@ -215,7 +215,7 @@ const HYPOTHESIS_PROBLEMS = [
   },
   {
     id: 's19',
-    slide: 'Slide 19',
+    slide: 'Sample 6',
     title: 'Coffee Shop Customer Waiting Time',
     testType: 't-test (One-sample, Left-tailed, n = 25)',
     problem:
@@ -235,7 +235,7 @@ const HYPOTHESIS_PROBLEMS = [
   },
   {
     id: 's21',
-    slide: 'Slide 21',
+    slide: 'Sample 7',
     title: 'Public vs. Private School Chemistry Scores',
     testType: 't-test (Two-sample, Two-tailed, Given Sample Variances)',
     problem:
@@ -255,7 +255,7 @@ const HYPOTHESIS_PROBLEMS = [
   },
   {
     id: 's22',
-    slide: 'Slide 22',
+    slide: 'Sample 9',
     title: 'Mathematics Teaching Methods A and B',
     testType: 't-test (Two-sample, One-tailed, Right-tailed)',
     problem:

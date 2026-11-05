@@ -13,50 +13,50 @@ const INIT = {
 // Examples taken from the Module 9 slides with actual given word problems
 const EXAMPLES = [
   {
-    label: 'Slide 11 · Luggage weight (Z one-sample)',
-    slide: 'Slide 11',
+    label: 'Sample 1 · Luggage weight (Z one-sample)',
+    slide: 'Sample 1 ',
     problemText: 'A traveler claims that the average weight of his luggage is 40 kilos with a standard deviation of 9.5 kilos. Would you agree to this claim if a random sample of 50 luggage showed an average weight of 38 kilos using 0.05 level of significance.',
     f: { dist: 'z', mode: 'one', tail: 'two', m0: '40', xbar: '38', sd: '9.5', n: '50', claim: 'Average luggage weight is 40 kg' },
   },
   {
-    label: 'Slide 12 · Cereal boxes (Z one-sample)',
-    slide: 'Slide 12',
+    label: 'Sample 2 · Cereal boxes (Z one-sample)',
+    slide: 'Sample 2',
     problemText: "A manufacturer claims that the mean weight of their cereal boxes is 500 grams. To test this claim, a random sample of 36 cereal boxes is selected, and their weights are recorded. The sample mean weight is found to be 495 grams with a known population standard deviation of 10 grams. At a 5% level of significance, can you conclude that the mean weight of the cereal boxes is different from the manufacturer's claim?",
     f: { dist: 'z', mode: 'one', tail: 'two', m0: '500', xbar: '495', sd: '10', n: '36', claim: 'Mean cereal box weight is 500 g' },
   },
   {
-    label: 'Slide 13 · School scores (Z one-sample)',
-    slide: 'Slide 13',
+    label: 'Sample 3 · School scores (Z one-sample)',
+    slide: 'Sample 3',
     problemText: "A school district claims that the average score of its students in a standardized test is higher than 75. To test this claim, a random sample of 100 students is taken, and their average score is found to be 78 with a known population standard deviation of 8. Conduct a one-tailed z-test at a 5% level of significance to determine if there is enough evidence to support the district's claim.",
     f: { dist: 'z', mode: 'one', tail: 'right', m0: '75', xbar: '78', sd: '8', n: '100', claim: 'Average score is higher than 75' },
   },
   {
-    label: 'Slide 15 · Full-time vs working students (Z two-sample)',
-    slide: 'Slide 15',
+    label: 'Sample 4 · Full-time vs working students (Z two-sample)',
+    slide: 'Sample 4',
     problemText: 'Fifty full time students were given an examination in Statistics and got an average grade of 95 with a variance of 10.5 while 50 working students have an average grade of 88 with a variance of 8.5. Is there a significant difference in the mean grade of the two groups at 0.05 level of significance?',
     f: { dist: 'z', mode: 'two', tail: 'two', spread: 'var', xbar1: '95', sd1: '10.5', n1: '50', xbar2: '88', sd2: '8.5', n2: '50', claim: 'Mean grades of the two groups differ' },
   },
   {
-    label: 'Slide 18 · Light bulbs (t one-sample)',
-    slide: 'Slide 18',
+    label: 'Sample 5 · Light bulbs (t one-sample)',
+    slide: 'Sample 5',
     problemText: 'A firm produces light bulbs having an average life span of 725 hours and with a standard deviation of 40 hours. If a random sample of 20 bulbs has an average life span of 700 hours, test the hypothesis that the life span of the lightbulbs is less than 725 hours.',
     f: { dist: 't', mode: 'one', tail: 'left', m0: '725', xbar: '700', sd: '40', n: '20', claim: 'Bulb life span is less than 725 hours' },
   },
   {
-    label: 'Slide 19 · Coffee shop (t one-sample)',
-    slide: 'Slide 19',
+    label: 'Sample 6 · Coffee shop (t one-sample)',
+    slide: 'Sample 6',
     problemText: "A coffee shop claims that the average waiting time for customers' orders is less than 4 minutes. To test this claim, a random sample of 25 orders is taken, and their waiting times are recorded. The sample mean waiting time is found to be 3.6 minutes with a sample standard deviation of 0.8 minutes. Conduct a one-tailed t-test at a 5% level of significance to determine if there is enough evidence to support the coffee shop's claim.",
     f: { dist: 't', mode: 'one', tail: 'left', m0: '4', xbar: '3.6', sd: '0.8', n: '25', claim: 'Average waiting time is less than 4 minutes' },
   },
   {
-    label: 'Slide 21 · Public vs private school (t two-sample)',
-    slide: 'Slide 21',
+    label: 'Sample 7 · Public vs private school (t two-sample)',
+    slide: 'Sample 7',
     problemText: 'Two samples are taken from two groups of students. Group 1 comes from public school and group 2 comes from private school. They were given examination in Chemistry subject and the results are shown below.\n\nGroup 1: n = 10, X̄₁ = 86, s₁² = 48\nGroup 2: n = 12, X̄₂ = 88, s₂² = 38\n\nTest whether the chemistry scores differ at the 0.05 level of significance.',
     f: { dist: 't', mode: 'two', tail: 'two', spread: 'var', xbar1: '86', sd1: '48', n1: '10', xbar2: '88', sd2: '38', n2: '12', claim: 'Chemistry scores differ' },
   },
   {
-    label: 'Slide 22 · Teaching methods (t two-sample)',
-    slide: 'Slide 22',
+    label: 'Sample 8 · Teaching methods (t two-sample)',
+    slide: 'Sample 8',
     problemText: 'An educational institute is implementing two teaching methods, A and B, for improving student performance in mathematics. They want to determine if method B leads to a higher average test score than method A. A sample of 30 students taught with method A has a mean test score of 75 with a standard deviation of 8. Another sample of 35 students taught with method B has a mean test score of 78 with a standard deviation of 7. Conduct a one-tailed t-test at a 5% level of significance to ascertain if method B results in a significantly higher average test score than method A.',
     f: { dist: 't', mode: 'two', tail: 'right', xbar1: '78', sd1: '7', n1: '35', xbar2: '75', sd2: '8', n2: '30', claim: 'Method B (sample 1) scores higher than Method A (sample 2)' },
   },
@@ -270,7 +270,7 @@ export default function ZTest({ onSave, initialProblem, onNavigate }) {
       {/* Actual Given Word Problems Quick Select Bar */}
       <section className="card" style={{ border: '2px solid #5B3CD6', background: 'rgba(27, 19, 62, 0.9)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
-          <h2 style={{ margin: 0 }}>Actual Given Word Problems (Module 9 Slides)</h2>
+          <h2 style={{ margin: 0 }}>Actual Given Word Problems (Module Samples)</h2>
           <small style={{ color: '#B9A2FF' }}>Select any slide problem to auto-fill parameters, problem text &amp; solve</small>
         </div>
         <p style={{ margin: '8px 0 12px', fontSize: '0.92rem', color: '#D8E2F0' }}>
@@ -328,7 +328,7 @@ export default function ZTest({ onSave, initialProblem, onNavigate }) {
 
           <label>Load from class examples dropdown
             <select defaultValue="" onChange={loadExample}>
-              <option value="" disabled>Choose a problem from Module 9…</option>
+              <option value="" disabled>Choose a problem from Module…</option>
               {EXAMPLES.map((ex, i) => <option key={ex.label} value={i}>{ex.label}</option>)}
             </select>
           </label>

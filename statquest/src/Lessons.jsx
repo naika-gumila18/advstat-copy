@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Formula from './Formula';
+import tTableImage from './assets/T-table.png';
 
 const REGRESSION_GLOSSARY = [
   ['Slope (b)', 'The predicted change in the dependent variable (Y) for each 1-unit increase in the independent variable (X).'],
@@ -617,6 +618,23 @@ export default function Lessons({
                 </tbody>
               </table>
             </div>
+          </section>
+
+          <section className="card">
+            <h2>Student’s t-Table</h2>
+            <img
+              src={tTableImage}
+              alt="Student's t critical values by degrees of freedom, one-tail and two-tail probabilities, and confidence level"
+              style={{
+                display: 'block',
+                width: '100%',
+                maxWidth: 750,
+                height: 'auto',
+                margin: '0 auto',
+                border: '1px solid #3F2B85',
+                borderRadius: 8,
+              }}
+            />
           </section>
 
           {/* Section 3: Formulas */}
